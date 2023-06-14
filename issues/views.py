@@ -1,5 +1,4 @@
-from typing import Any, Dict
-from django.db.models.query import QuerySet
+from django.db.models import Q
 from django.contrib.auth import get_user_model
 from django.views.generic import (
     CreateView,
@@ -59,4 +58,8 @@ class IssueListView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         user_team = Team.objects.get(name=self.request.user.team.name)
         users_in_team = CustomUser.objects.filter(team=user_team)
-        # retrieve tasks for users in team
+        tasks_for_users = Issue.objects.filter(
+            Q(assignee__in=users_in_team) | Q(reporter=self.request.user)
+        )
+        context['tasks'] = tasks_for_users
+        return context
