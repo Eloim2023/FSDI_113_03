@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+
+{% block title %}Issues{% endblock title %}
+
+
+{% block content %}
+<div class="offset-md-1"><h1>Issues</h1></div>
+{% for issue in issue_list %}
+<div class="card" style="width: 18rem;">
+    <div class="card-body">
+      <h5 class="card-title">{{ issue.summary }}</h5>
+      <p class="card-text">{{ issue.body|truncatechars:512 }}</p>
+    </div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">Assignee: {{ issue.assignee }}</li>
+      <li class="list-group-item">Status: {{ issue.status }}</li>
+      <li class="list-group-item">Priority: {{ issue.priority }}</li>
+    </ul>
+    <div class="card-body">
+      <a href="{% url 'detail' issue.id %}" class="card-link">Continue reading...</a>
+    </div>
+  </div>
+<br/>
+{% endfor %}
+{% endblock content %}

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Edit Issue{% endblock title %}
+
+
+{% block content %}
+<div class="offset-md-1">
+    <h1>Edit Issue</h1>
+</div>
+<div class="container">
+    <form method="POST">
+        {% csrf_token %}
+        {{ form|crispy}}
+        <input type="submit" class="btn btn-warning" value="Edit">
+    </form>
+</div>
+{% endblock content %}
+
+

@@ -37,9 +37,10 @@ class Issue(models.Model):
         on_delete=models.CASCADE
     )
     created_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(blank=True, null=True, default=None)
 
     def __str__(self):
         return self.summary[:100]
     
     def get_absolute_url(self):
-        pass
+        return reverse_lazy('detail', args=[self.id])
