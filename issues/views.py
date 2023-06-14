@@ -13,7 +13,7 @@ from django.contrib.auth.mixins import (
     LoginRequiredMixin,
     UserPassesTestMixin
 )
-from accounts.models import Role, Team
+from accounts.models import Role, Team, CustomUser
 from .models import Issue, Priority, Status
 
 class IssueCreateView(LoginRequiredMixin, CreateView):
@@ -57,15 +57,6 @@ class IssueListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        team_list = Team.objects.all()
-        User = get_user_model()
-
-        team_issues = {}
-        for team in team_list:
-            team_issues[team.name] = Issue.objects.filter(
-                assignee_team=team,
-                assignee_in=User.objects.filter(team=team)).order_by("-priority")
-        context["team_issues"] = team_issues
-        return context
-
-        ## return post.reporter == self.request.user
+        user_team = Team.objects.get(name=self.request.user.team.name)
+        users_in_team = CustomUser.objects.filter(team=user_team)
+        # retrieve tasks for users in team
