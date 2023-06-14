@@ -61,5 +61,5 @@ class IssueListView(LoginRequiredMixin, ListView):
         tasks_for_users = Issue.objects.filter(
             Q(assignee__in=users_in_team) | Q(reporter=self.request.user)
         )
-        context['tasks'] = tasks_for_users
+        context['issue_list'] = tasks_for_users  # Assign the queryset to 'issue_list' key
         return context
